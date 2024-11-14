@@ -11,7 +11,7 @@ class Analytics {
   final double totalExpense;
 
   @HiveField(2)
-  final double expenseItem;
+  final double category;
 
-  Analytics({required this.totalIncome, required this.totalExpense, required this.expenseItem});
+  Analytics({required this.totalIncome, required this.totalExpense, required this.category});
 }
