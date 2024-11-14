@@ -1,15 +1,22 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_home_work10/data/models/analytics.dart';
+import 'package:flutter_home_work10/data/models/transaction.dart';
+import 'package:flutter_home_work10/data/models/user_settings.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_home_work10/screens/transaction_screen.dart';
-import 'package:flutter_home_work10/data_base/hive_base.dart';
 import 'package:flutter_home_work10/services/data_connection.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await HiveTransaction().initHive();
+  final appDocDir = await getApplicationDocumentsDirectory();
+  Hive.init(appDocDir.path);
+
+  Hive.registerAdapter(TransactionAdapter());
+  Hive.registerAdapter(UserSettingsAdapter());
+  Hive.registerAdapter(AnalyticsAdapter());
+
 
   runApp(const MyApp());
 }
