@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_home_work10/screens/screens.dart';
+import 'package:flutter_home_work10/stores/user_settings_store.dart';
 
 
 void main() async {
@@ -22,11 +23,16 @@ void main() async {
   await Hive.openBox<UserSettings>('userSettingsBox');
   await Hive.openBox<Analytics>('analyticsBox');
 
-  runApp(const MyApp());
+  final userSettingsStore = UserSettingsStore();
+  await userSettingsStore.loadSettings();
+
+  runApp(MyApp(userSettingsStore: userSettingsStore));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final UserSettingsStore userSettingsStore;
+
+  const MyApp({super.key, required this.userSettingsStore});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +46,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
         '/': (context) => const HomeScreen(),
-        '/settings': (context) => const UserSettingsScreen(),
+        '/settings': (context) => UserSettingsScreen(settingsStore: userSettingsStore),
         '/transactions': (context) => const UserTransactionsScreen(),
         '/analytics': (context) => const UserAnalyticsScreen(),
       },

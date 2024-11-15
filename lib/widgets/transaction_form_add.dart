@@ -10,11 +10,11 @@ class TransactionFormAdd extends StatelessWidget {
 }
 
 
-// class RecipeForm extends StatefulWidget {
+// class TransactionFormAdd extends StatefulWidget {
 //   const RecipeForm({super.key});
 //
 //   @override
-//   RecipeFormState createState() => RecipeFormState();
+//   TransactionFormAddState createState() => TransactionFormAddState();
 // }
 //
 // class RecipeFormState extends State<RecipeForm> {
