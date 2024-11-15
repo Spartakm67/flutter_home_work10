@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
 
+class TransactionFormAdd extends StatelessWidget {
+  const TransactionFormAdd({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+
 // class RecipeForm extends StatefulWidget {
 //   const RecipeForm({super.key});
 //
