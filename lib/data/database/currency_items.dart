@@ -8,13 +8,19 @@ class CurrencyItems {
         .map((currency) => DropdownMenuItem(
       value: currency,
       child: Text(currency),
-    ))
+    ),)
         .toList();
   }
 
   static void addCurrency(String currency) {
     if (!currencies.contains(currency)) {
       currencies.add(currency);
+    }
+  }
+
+  static void deleteCurrency(String currency) {
+    if (!currencies.contains(currency)) {
+      currencies.remove(currency);
     }
   }
 }

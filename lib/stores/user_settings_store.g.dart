@@ -41,6 +41,22 @@ mixin _$UserSettingsStore on BaseUserSettingsStore, Store {
     });
   }
 
+  late final _$currenciesAtom =
+      Atom(name: 'BaseUserSettingsStore.currencies', context: context);
+
+  @override
+  ObservableList<String> get currencies {
+    _$currenciesAtom.reportRead();
+    return super.currencies;
+  }
+
+  @override
+  set currencies(ObservableList<String> value) {
+    _$currenciesAtom.reportWrite(value, super.currencies, () {
+      super.currencies = value;
+    });
+  }
+
   late final _$loadSettingsAsyncAction =
       AsyncAction('BaseUserSettingsStore.loadSettings', context: context);
 
@@ -55,6 +71,31 @@ mixin _$UserSettingsStore on BaseUserSettingsStore, Store {
   @override
   Future<void> saveSettings() {
     return _$saveSettingsAsyncAction.run(() => super.saveSettings());
+  }
+
+  late final _$loadCurrenciesAsyncAction =
+      AsyncAction('BaseUserSettingsStore.loadCurrencies', context: context);
+
+  @override
+  Future<void> loadCurrencies() {
+    return _$loadCurrenciesAsyncAction.run(() => super.loadCurrencies());
+  }
+
+  late final _$addCurrencyAsyncAction =
+      AsyncAction('BaseUserSettingsStore.addCurrency', context: context);
+
+  @override
+  Future<void> addCurrency(String currency) {
+    return _$addCurrencyAsyncAction.run(() => super.addCurrency(currency));
+  }
+
+  late final _$deleteCurrencyAsyncAction =
+      AsyncAction('BaseUserSettingsStore.deleteCurrency', context: context);
+
+  @override
+  Future<void> deleteCurrency(String currency) {
+    return _$deleteCurrencyAsyncAction
+        .run(() => super.deleteCurrency(currency));
   }
 
   late final _$BaseUserSettingsStoreActionController =
@@ -86,7 +127,8 @@ mixin _$UserSettingsStore on BaseUserSettingsStore, Store {
   String toString() {
     return '''
 currency: ${currency},
-budgetLimit: ${budgetLimit}
+budgetLimit: ${budgetLimit},
+currencies: ${currencies}
     ''';
   }
 }

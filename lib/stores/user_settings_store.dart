@@ -15,6 +15,12 @@ abstract class BaseUserSettingsStore with Store {
   @observable
   double budgetLimit = 0.0;
 
+  @observable
+  ObservableList<String> currencies = ObservableList.of([]);
+
+  late Box<String> currencyBox;
+
+  static const List<String> defaultCurrencies = ['USD', 'EUR', 'UAH'];
 
   @action
   Future<void> loadSettings() async {
@@ -43,6 +49,34 @@ abstract class BaseUserSettingsStore with Store {
     final parsedLimit = double.tryParse(limit);
     if (parsedLimit != null) {
       budgetLimit = parsedLimit;
+    }
+  }
+
+  @action
+  Future<void> loadCurrencies() async {
+    currencyBox = await Hive.openBox<String>('currenciesBox');
+
+    if (currencyBox.isEmpty) {
+      for (final String currency in defaultCurrencies) {
+        await currencyBox.put(currency, currency);
+      }
+    }
+    currencies = ObservableList.of(currencyBox.values.toList());
+  }
+
+  @action
+  Future<void> addCurrency(String currency) async {
+    if (!currencies.contains(currency)) {
+      currencies.add(currency);
+      await currencyBox.put(currency, currency);
+    }
+  }
+
+  @action
+  Future<void> deleteCurrency(String currency) async {
+    if (currencies.contains(currency)) {
+      currencies.remove(currency);
+      await currencyBox.delete(currency);
     }
   }
 }

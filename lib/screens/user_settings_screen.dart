@@ -44,6 +44,7 @@ class UserSettingsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             const Text('Budget Limit:'),
+            const SizedBox(height: 10),
             Observer(
               builder: (_) => TextFormField(
                 initialValue: settingsStore.budgetLimit.toString(),
