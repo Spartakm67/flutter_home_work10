@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_home_work10/data/database/hive_box_names.dart';
 import 'package:flutter_home_work10/data/models/analytics.dart';
 import 'package:flutter_home_work10/data/models/transaction.dart';
 import 'package:flutter_home_work10/data/models/user_settings.dart';
@@ -18,10 +19,10 @@ void main() async {
   Hive.registerAdapter(UserSettingsAdapter());
   Hive.registerAdapter(AnalyticsAdapter());
 
-  await Hive.openBox<Transaction>('transactionsBox');
-  await Hive.openBox<UserSettings>('userSettingsBox');
-  await Hive.openBox<Analytics>('analyticsBox');
-  await Hive.openBox<String>('currenciesBox');
+  await Hive.openBox<Transaction>(HiveBoxNames.transactionBox);
+  await Hive.openBox<UserSettings>(HiveBoxNames.userSettingsBox);
+  await Hive.openBox<Analytics>(HiveBoxNames.analyticsBox);
+  await Hive.openBox<String>(HiveBoxNames.currenciesBox);
 
   final userSettingsStore = UserSettingsStore();
   await userSettingsStore.loadSettings();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_home_work10/data/database/currency_items.dart';
 import 'package:flutter_home_work10/stores/user_settings_store.dart';
+import 'package:flutter_home_work10/widgets/add_currency_dialog.dart';
 
 class UserSettingsScreen extends StatelessWidget {
   final UserSettingsStore settingsStore;
@@ -27,7 +27,14 @@ class UserSettingsScreen extends StatelessWidget {
                     child: DropdownButton<String>(
                       isExpanded: true,
                       value: settingsStore.currency,
-                      items: CurrencyItems.getDropdownItems(),
+                      items: settingsStore.currencies
+                          .map(
+                            (currency) => DropdownMenuItem(
+                              value: currency,
+                              child: Text(currency),
+                            ),
+                          )
+                          .toList(),
                       onChanged: (value) {
                         if (value != null) {
                           settingsStore.updateCurrency(value);
@@ -37,7 +44,8 @@ class UserSettingsScreen extends StatelessWidget {
                   ),
                   IconButton(
                     icon: const Icon(Icons.add),
-                    onPressed: () => _showAddCurrencyDialog(context),
+                    onPressed: () => AddCurrencyDialog.showAddCurrencyDialog(
+                        context, settingsStore,),
                   ),
                 ],
               ),
@@ -64,45 +72,6 @@ class UserSettingsScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  void _showAddCurrencyDialog(BuildContext context) {
-    final TextEditingController currencyController = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Add New Currency'),
-          content: TextField(
-            controller: currencyController,
-            decoration: const InputDecoration(
-              hintText: 'Enter currency code (e.g., GBP)',
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                final newCurrency = currencyController.text.toUpperCase().trim();
-                if (newCurrency.isNotEmpty) {
-                  CurrencyItems.addCurrency(newCurrency);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('$newCurrency added to currencies')),
-                  );
-                  Navigator.of(context).pop();
-                }
-              },
-              child: const Text('Add'),
-            ),
-          ],
-        );
-      },
     );
   }
 }

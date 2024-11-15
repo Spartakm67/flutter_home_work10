@@ -20,7 +20,7 @@ abstract class BaseUserSettingsStore with Store {
 
   late Box<String> currencyBox;
 
-  static const List<String> defaultCurrencies = ['USD', 'EUR', 'UAH'];
+  static const List<String> defaultCurrencies = ['USD', 'EUR', 'UAH', 'PNL'];
 
   @action
   Future<void> loadSettings() async {
@@ -67,8 +67,9 @@ abstract class BaseUserSettingsStore with Store {
   @action
   Future<void> addCurrency(String currency) async {
     if (!currencies.contains(currency)) {
-      currencies.add(currency);
       await currencyBox.put(currency, currency);
+
+      currencies.add(currency);
     }
   }
 
