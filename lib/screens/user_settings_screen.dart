@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_home_work10/stores/user_settings_store.dart';
 import 'package:flutter_home_work10/widgets/add_currency_dialog.dart';
+import 'package:flutter_home_work10/widgets/custom_button.dart';
 
 class UserSettingsScreen extends StatelessWidget {
   final UserSettingsStore settingsStore;
@@ -45,7 +46,9 @@ class UserSettingsScreen extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.add),
                     onPressed: () => AddCurrencyDialog.showAddCurrencyDialog(
-                        context, settingsStore,),
+                      context,
+                      settingsStore,
+                    ),
                   ),
                 ],
               ),
@@ -65,10 +68,12 @@ class UserSettingsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: settingsStore.saveSettings,
-              child: const Text('Save Settings'),
-            ),
+            // ElevatedButton(
+            //   onPressed: settingsStore.saveSettings,
+            //   child: const Text('Save Settings'),
+            // ),
+            CustomButton(
+                onPressed: settingsStore.saveSettings, text: 'Save Settings',),
           ],
         ),
       ),

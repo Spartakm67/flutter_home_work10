@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_home_work10/styles/text_styles.dart';
 import 'package:flutter_home_work10/widgets/transaction_form_add.dart';
+import 'package:flutter_home_work10/widgets/custom_button.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -9,61 +10,43 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'My Finance App',
-        ),
+        title: const Text('My Finance App'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextStyles.styledText('Welcome!', TextStyles.greetingsText),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
+            const SizedBox(height: 20),
+            CustomButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/settings');
               },
-              child: const Text(
-                'User Settings', style: TextStyles.buttonText,
-              ),
+              text: 'User Settings',
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
+            const SizedBox(height: 20),
+            CustomButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const TransactionFormAdd()),
                 );
               },
-              child: const Text(
-                'Add Transaction', style: TextStyles.buttonText,
-              ),
+              text: 'Add Transaction',
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
+            const SizedBox(height: 20),
+            CustomButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/transactions');
               },
-              child: const Text(
-                'Transaction List', style: TextStyles.buttonText,
-              ),
+              text: 'Transaction List',
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
+            const SizedBox(height: 20),
+            CustomButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/analytics');
               },
-              child: const Text(
-                'Analytics', style: TextStyles.buttonText,
-              ),
+              text: 'Analytics',
             ),
           ],
         ),

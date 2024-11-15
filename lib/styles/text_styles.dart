@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class TextStyles {
   static const TextStyle buttonText = TextStyle(
-    fontSize: 14,
-    color: Colors.red,
+    fontSize: 16,
+    color: Colors.indigo,
     fontStyle: FontStyle.italic,
     fontWeight: FontWeight.bold,
     shadows: [
