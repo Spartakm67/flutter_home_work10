@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_home_work10/widgets/transaction_form_add.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_home_work10/stores/transaction_store.dart';
+import 'package:flutter_home_work10/stores/user_settings_store.dart';
 
 class UserTransactionsScreen extends StatelessWidget {
   final TransactionStore transactionStore = TransactionStore();
@@ -10,6 +11,7 @@ class UserTransactionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userSettings = UserSettingsStore();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Transactions'),
@@ -40,15 +42,16 @@ class UserTransactionsScreen extends StatelessWidget {
                       subtitle: Text(
                         '${transaction.category} - ${transaction.date.toLocal().toString().split(' ')[0]}',
                       ),
-                      trailing:
-                          Text('\$${transaction.amount.toStringAsFixed(2)}'),
+                      trailing: Text(
+                          '${userSettings.currency} ${transaction.amount.toStringAsFixed(2)}'),
                       onLongPress: () {
                         showDialog(
                           context: context,
                           builder: (_) => AlertDialog(
                             title: const Text('Delete Transaction'),
                             content: const Text(
-                                'Are you sure you want to delete this transaction?'),
+                              'Are you sure you want to delete this transaction?',
+                            ),
                             actions: [
                               TextButton(
                                 onPressed: () {
