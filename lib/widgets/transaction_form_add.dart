@@ -8,18 +8,6 @@ class TransactionFormAdd extends StatelessWidget {
 
   const TransactionFormAdd({super.key, required this.transactionStore});
 
-  void _pickDate(BuildContext context) async {
-    final pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (pickedDate != null) {
-      transactionStore.updateDate(pickedDate);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +104,7 @@ class TransactionFormAdd extends StatelessWidget {
                     );
 
                     transactionStore.addTransaction(newTransaction);
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pushNamed('/transactions');
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Please fill in all fields')),
@@ -130,5 +118,16 @@ class TransactionFormAdd extends StatelessWidget {
         ),
       ),
     );
+  }
+  void _pickDate(BuildContext context) async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+    if (pickedDate != null) {
+      transactionStore.updateDate(pickedDate);
+    }
   }
 }

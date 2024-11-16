@@ -11,9 +11,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+      return Scaffold(
+        backgroundColor: Colors.lightGreen,
       appBar: AppBar(
         title: const Text('My Finance App'),
+        backgroundColor: Colors.lightGreen,
       ),
       body: Center(
         child: Column(

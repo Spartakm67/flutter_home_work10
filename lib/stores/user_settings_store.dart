@@ -13,7 +13,7 @@ abstract class BaseUserSettingsStore with Store {
   String currency = 'USD';
 
   @observable
-  double budgetLimit = 0.0;
+  double budgetLimit = 1000.0;
 
   @observable
   ObservableList<String> currencies = ObservableList.of([]);
