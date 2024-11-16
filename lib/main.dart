@@ -20,7 +20,6 @@ void main() async {
   Hive.registerAdapter(UserSettingsAdapter());
   Hive.registerAdapter(AnalyticsAdapter());
 
-  // await Hive.openBox<Transaction>(HiveBoxNames.transactionBox);
   await Hive.openBox<UserSettings>(HiveBoxNames.userSettingsBox);
   await Hive.openBox<Analytics>(HiveBoxNames.analyticsBox);
   await Hive.openBox<String>(HiveBoxNames.currenciesBox);

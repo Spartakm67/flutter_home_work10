@@ -39,7 +39,7 @@ class TransactionFormAdd extends StatelessWidget {
                       if (value == null || value.isEmpty) {
                         return 'Please enter an amount';
                       }
-                      if (transactionStore.amount == null || transactionStore.amount! <= 0) {
+                      if (transactionStore.amount <= 0) {
                         return 'Enter a valid amount greater than zero';
                       }
                       return null;
@@ -64,7 +64,9 @@ class TransactionFormAdd extends StatelessWidget {
               Observer(
                 builder: (_) {
                   return DropdownButtonFormField<String>(
-                    value: transactionStore.selectedCategory,
+                    value: transactionStore.selectedCategory.isEmpty
+                        ? null
+                        : transactionStore.selectedCategory,
                     items: transactionStore.categories
                         .map((category) => DropdownMenuItem(
                       value: category,
@@ -89,9 +91,7 @@ class TransactionFormAdd extends StatelessWidget {
                     child: Observer(
                       builder: (_) {
                         return Text(
-                          transactionStore.selectedDate == null
-                              ? 'No date selected'
-                              : 'Selected date: ${transactionStore.selectedDate!.toLocal().toString().split(' ')[0]}',
+                          'Selected date: ${transactionStore.selectedDate.toLocal().toString().split(' ')[0]}',
                         );
                       },
                     ),
@@ -105,15 +105,14 @@ class TransactionFormAdd extends StatelessWidget {
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  if (transactionStore.amount != null &&
-                      transactionStore.description != null &&
-                      transactionStore.selectedCategory != null &&
-                      transactionStore.selectedDate != null) {
+                  if (transactionStore.amount > 0 &&
+                      transactionStore.description.isNotEmpty &&
+                      transactionStore.selectedCategory.isNotEmpty) {
                     final newTransaction = Transaction(
-                      amount: transactionStore.amount!,
-                      description: transactionStore.description!,
-                      category: transactionStore.selectedCategory!,
-                      date: transactionStore.selectedDate!,
+                      amount: transactionStore.amount,
+                      description: transactionStore.description,
+                      category: transactionStore.selectedCategory,
+                      date: transactionStore.selectedDate,
                     );
 
                     transactionStore.addTransaction(newTransaction);

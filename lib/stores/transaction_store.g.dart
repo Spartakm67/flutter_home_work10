@@ -45,13 +45,13 @@ mixin _$TransactionStore on TransactionStoreBase, Store {
       Atom(name: 'TransactionStoreBase.selectedCategory', context: context);
 
   @override
-  String? get selectedCategory {
+  String get selectedCategory {
     _$selectedCategoryAtom.reportRead();
     return super.selectedCategory;
   }
 
   @override
-  set selectedCategory(String? value) {
+  set selectedCategory(String value) {
     _$selectedCategoryAtom.reportWrite(value, super.selectedCategory, () {
       super.selectedCategory = value;
     });
@@ -61,13 +61,13 @@ mixin _$TransactionStore on TransactionStoreBase, Store {
       Atom(name: 'TransactionStoreBase.description', context: context);
 
   @override
-  String? get description {
+  String get description {
     _$descriptionAtom.reportRead();
     return super.description;
   }
 
   @override
-  set description(String? value) {
+  set description(String value) {
     _$descriptionAtom.reportWrite(value, super.description, () {
       super.description = value;
     });
@@ -77,13 +77,13 @@ mixin _$TransactionStore on TransactionStoreBase, Store {
       Atom(name: 'TransactionStoreBase.amount', context: context);
 
   @override
-  double? get amount {
+  double get amount {
     _$amountAtom.reportRead();
     return super.amount;
   }
 
   @override
-  set amount(double? value) {
+  set amount(double value) {
     _$amountAtom.reportWrite(value, super.amount, () {
       super.amount = value;
     });
@@ -93,13 +93,13 @@ mixin _$TransactionStore on TransactionStoreBase, Store {
       Atom(name: 'TransactionStoreBase.selectedDate', context: context);
 
   @override
-  DateTime? get selectedDate {
+  DateTime get selectedDate {
     _$selectedDateAtom.reportRead();
     return super.selectedDate;
   }
 
   @override
-  set selectedDate(DateTime? value) {
+  set selectedDate(DateTime value) {
     _$selectedDateAtom.reportWrite(value, super.selectedDate, () {
       super.selectedDate = value;
     });
@@ -138,7 +138,7 @@ mixin _$TransactionStore on TransactionStoreBase, Store {
   }
 
   @override
-  void updateDescription(String? desc) {
+  void updateDescription(String desc) {
     final _$actionInfo = _$TransactionStoreBaseActionController.startAction(
         name: 'TransactionStoreBase.updateDescription');
     try {
@@ -160,7 +160,7 @@ mixin _$TransactionStore on TransactionStoreBase, Store {
   }
 
   @override
-  void updateDate(DateTime? date) {
+  void updateDate(DateTime date) {
     final _$actionInfo = _$TransactionStoreBaseActionController.startAction(
         name: 'TransactionStoreBase.updateDate');
     try {

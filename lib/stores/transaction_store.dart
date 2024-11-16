@@ -24,38 +24,38 @@ abstract class TransactionStoreBase with Store {
   ]);
 
   @observable
-  String? selectedCategory;
+  String selectedCategory = 'Food';
 
   @observable
-  String? description;
+  String description = '';
 
   @observable
-  double? amount;
+  double amount = 0.0;
 
   @observable
-  DateTime? selectedDate;
+  DateTime selectedDate = DateTime.now();
 
   @action
   void updateCategory(String? category) {
-    selectedCategory = category;
+    selectedCategory = category ?? '';
   }
 
   @action
-  void updateDescription(String? desc) {
+  void updateDescription(String desc) {
     description = desc;
   }
 
   @action
   void updateAmount(String? amt) {
     if (amt == null || amt.isEmpty) {
-      amount = null;
+      amount = 0.0;
     } else {
-      amount = double.tryParse(amt);
+      amount = double.tryParse(amt) ?? 0.0;
     }
   }
 
   @action
-  void updateDate(DateTime? date) {
+  void updateDate(DateTime date) {
     selectedDate = date;
   }
 
@@ -64,9 +64,11 @@ abstract class TransactionStoreBase with Store {
   }
 
   Future<void> _init() async {
+
     transactionBox =
         await Hive.openBox<Transaction>(HiveBoxNames.transactionBox);
-    transactions.addAll(transactionBox.values);
+
+    transactions.addAll(transactionBox.values.toList());
   }
 
   @action
