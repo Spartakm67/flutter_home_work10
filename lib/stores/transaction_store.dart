@@ -1,24 +1,93 @@
 import 'package:mobx/mobx.dart';
+import 'package:hive/hive.dart';
+import 'package:flutter_home_work10/data/database/hive_box_names.dart';
+import 'package:flutter_home_work10/data/models/transaction.dart';
 
 part 'transaction_store.g.dart';
 
-class TransactionStore = BaseTransactionStore with _$TransactionStore;
+class TransactionStore = TransactionStoreBase with _$TransactionStore;
 
-abstract class BaseTransactionStore with Store {
-  @observable
-  double amount = 0;
-
-  @observable
-  String description = '';
+abstract class TransactionStoreBase with Store {
+  late Box<Transaction> transactionBox;
 
   @observable
-  String category = '';
+  ObservableList<Transaction> transactions = ObservableList<Transaction>();
 
   @observable
-  late DateTime date;
+  ObservableList<String> categories = ObservableList<String>.of([
+    'Food',
+    'Transport',
+    'Entertainment',
+    'Clothing',
+    'Financial',
+    'Car',
+  ]);
+
+  @observable
+  String? selectedCategory;
+
+  @observable
+  String? description;
+
+  @observable
+  double? amount;
+
+  @observable
+  DateTime? selectedDate;
 
   @action
-  void increment() {
+  void updateCategory(String? category) {
+    selectedCategory = category;
+  }
 
+  @action
+  void updateDescription(String? desc) {
+    description = desc;
+  }
+
+  @action
+  void updateAmount(String? amt) {
+    if (amt == null || amt.isEmpty) {
+      amount = null;
+    } else {
+      amount = double.tryParse(amt);
+    }
+  }
+
+  @action
+  void updateDate(DateTime? date) {
+    selectedDate = date;
+  }
+
+  TransactionStoreBase() {
+    _init();
+  }
+
+  Future<void> _init() async {
+    transactionBox =
+        await Hive.openBox<Transaction>(HiveBoxNames.transactionBox);
+    transactions.addAll(transactionBox.values);
+  }
+
+  @action
+  Future<void> addTransaction(Transaction transaction) async {
+    await transactionBox.add(transaction);
+    transactions.add(transaction);
+  }
+
+  @action
+  Future<void> deleteTransaction(int index) async {
+    await transactionBox.deleteAt(index);
+    transactions.removeAt(index);
+  }
+
+  @action
+  void addCategory(String category) {
+    categories.add(category);
+  }
+
+  @action
+  void removeCategory(String category) {
+    categories.remove(category);
   }
 }

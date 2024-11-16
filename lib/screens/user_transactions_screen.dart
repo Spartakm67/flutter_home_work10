@@ -1,80 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_home_work10/widgets/transaction_form_add.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_home_work10/stores/transaction_store.dart';
 
 class UserTransactionsScreen extends StatelessWidget {
-  const UserTransactionsScreen({super.key});
+  final TransactionStore transactionStore = TransactionStore();
+
+  UserTransactionsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Рецепти'),
+        title: const Text('Transactions'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => TransactionFormAdd(transactionStore: transactionStore),
+              ));
+            },
+          ),
+        ],
       ),
-      body: Column(
-        // children: [
-        //   Padding(
-        //     padding: const EdgeInsets.all(8.0),
-        //     child: TextField(
-        //       controller: recipeModel.searchController,
-        //       onChanged: (query) => recipeModel.setSearchQuery(query),
-        //       decoration: InputDecoration(
-        //         labelText: 'Пошук за назвою',
-        //         border: const OutlineInputBorder(),
-        //         suffixIcon: recipeModel.searchController.text.isNotEmpty
-        //             ? IconButton(
-        //           icon: const Icon(Icons.clear),
-        //           onPressed: recipeModel.clearSearchQuery,
-        //         )
-        //             : null,
-        //       ),
-        //     ),
-        //   ),
-        //   Padding(
-        //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        //     child: DropdownButton<String>(
-        //       value: recipeModel.selectedCategory,
-        //       hint: const Text("Обрати категорію"),
-        //       onChanged: (category) =>
-        //           recipeModel.setSelectedCategory(category),
-        //       isExpanded: true,
-        //       items: [
-        //         const DropdownMenuItem(
-        //           value: null,
-        //           child: Text("Усі категорії"),
-        //         ),
-        //         ...recipeModel.getAllCategories().map((category) {
-        //           return DropdownMenuItem(
-        //             value: category,
-        //             child: Text(category),
-        //           );
-        //         }),
-        //       ],
-        //     ),
-        //   ),
-        //   Expanded(
-        //     child: ListView.builder(
-        //       itemCount: recipes.length,
-        //       itemBuilder: (context, index) {
-        //         final recipe = recipes[index];
-        //         return RecipeCard(recipe: recipe);
-        //       },
-        //     ),
-        //   ),
-        // ],
+      body: Observer(
+        builder: (_) {
+          return transactionStore.transactions.isEmpty
+              ? const Center(child: Text('No transactions yet.'))
+              : ListView.builder(
+            itemCount: transactionStore.transactions.length,
+            itemBuilder: (context, index) {
+              final transaction = transactionStore.transactions[index];
+              return ListTile(
+                title: Text(transaction.description),
+                subtitle: Text(
+                    '${transaction.category} - ${transaction.date.toLocal().toString().split(' ')[0]}'),
+                trailing: Text('\$${transaction.amount.toStringAsFixed(2)}'),
+                onLongPress: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: const Text('Delete Transaction'),
+                      content: const Text('Are you sure you want to delete this transaction?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            transactionStore.deleteTransaction(index);
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Delete'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () async {
-      //     final result = await Navigator.push(
-      //       context,
-      //       MaterialPageRoute(builder: (_) => const RecipeForm()),
-      //     );
-      //     if (result != null && result is Recipe) {
-      //       recipeModel.addRecipe(result);
-      //     }
-      //   },
-      //   child: const Icon(Icons.add),
-      // ),
     );
   }
 }

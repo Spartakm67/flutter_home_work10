@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_home_work10/styles/text_styles.dart';
 import 'package:flutter_home_work10/widgets/transaction_form_add.dart';
 import 'package:flutter_home_work10/widgets/custom_button.dart';
+import 'package:flutter_home_work10/stores/transaction_store.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final TransactionStore transactionStore;
+
+  const HomeScreen({super.key, required this.transactionStore});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,11 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const TransactionFormAdd()),
+                  MaterialPageRoute(
+                    builder: (_) => TransactionFormAdd(
+                      transactionStore: transactionStore,
+                    ),
+                  ),
                 );
               },
               text: 'Add Transaction',
@@ -54,4 +61,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-

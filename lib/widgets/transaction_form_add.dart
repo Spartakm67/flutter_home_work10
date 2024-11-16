@@ -1,176 +1,135 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_home_work10/data/models/transaction.dart';
+import 'package:flutter_home_work10/stores/transaction_store.dart';
 
 class TransactionFormAdd extends StatelessWidget {
-  const TransactionFormAdd({super.key});
+  final TransactionStore transactionStore;
+
+  const TransactionFormAdd({super.key, required this.transactionStore});
+
+  void _pickDate(BuildContext context) async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+    if (pickedDate != null) {
+      transactionStore.updateDate(pickedDate);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: const Text('Add Transaction')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          child: Column(
+            children: [
+              Observer(
+                builder: (_) {
+                  return TextFormField(
+                    decoration: const InputDecoration(labelText: 'Amount'),
+                    keyboardType: TextInputType.number,
+                    onChanged: transactionStore.updateAmount,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter an amount';
+                      }
+                      if (transactionStore.amount == null || transactionStore.amount! <= 0) {
+                        return 'Enter a valid amount greater than zero';
+                      }
+                      return null;
+                    },
+                  );
+                },
+              ),
+              Observer(
+                builder: (_) {
+                  return TextFormField(
+                    decoration: const InputDecoration(labelText: 'Description'),
+                    onChanged: transactionStore.updateDescription,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a description';
+                      }
+                      return null;
+                    },
+                  );
+                },
+              ),
+              Observer(
+                builder: (_) {
+                  return DropdownButtonFormField<String>(
+                    value: transactionStore.selectedCategory,
+                    items: transactionStore.categories
+                        .map((category) => DropdownMenuItem(
+                      value: category,
+                      child: Text(category),
+                    ),)
+                        .toList(),
+                    onChanged: transactionStore.updateCategory,
+                    decoration: const InputDecoration(labelText: 'Category'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select a category';
+                      }
+                      return null;
+                    },
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: Observer(
+                      builder: (_) {
+                        return Text(
+                          transactionStore.selectedDate == null
+                              ? 'No date selected'
+                              : 'Selected date: ${transactionStore.selectedDate!.toLocal().toString().split(' ')[0]}',
+                        );
+                      },
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () => _pickDate(context),
+                    child: const Text('Pick Date'),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              ElevatedButton(
+                onPressed: () {
+                  if (transactionStore.amount != null &&
+                      transactionStore.description != null &&
+                      transactionStore.selectedCategory != null &&
+                      transactionStore.selectedDate != null) {
+                    final newTransaction = Transaction(
+                      amount: transactionStore.amount!,
+                      description: transactionStore.description!,
+                      category: transactionStore.selectedCategory!,
+                      date: transactionStore.selectedDate!,
+                    );
+
+                    transactionStore.addTransaction(newTransaction);
+                    Navigator.of(context).pop();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please fill in all fields')),
+                    );
+                  }
+                },
+                child: const Text('Add Transaction'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
-
-
-// class TransactionFormAdd extends StatefulWidget {
-//   const RecipeForm({super.key});
-//
-//   @override
-//   TransactionFormAddState createState() => TransactionFormAddState();
-// }
-//
-// class RecipeFormState extends State<RecipeForm> {
-//   final _formKey = GlobalKey<FormState>();
-//
-//   final TextEditingController _titleController = TextEditingController();
-//   final TextEditingController _descriptionController = TextEditingController();
-//   final TextEditingController _ingredientController = TextEditingController();
-//   final TextEditingController _instructionController = TextEditingController();
-//   String? _selectedCategory;
-//   String? _selectedImage;
-//   // final categories = CategoryRepository.getAllCategories();
-//   // final images = ImageRepository.getAllImages();
-//
-//   @override
-//   void dispose() {
-//     _titleController.dispose();
-//     _descriptionController.dispose();
-//     _ingredientController.dispose();
-//     _instructionController.dispose();
-//     super.dispose();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: const Text('Створити рецепт')),
-//       body: SingleChildScrollView(
-//         child: Padding(
-//           padding: const EdgeInsets.all(16.0),
-//           child: Form(
-//             key: _formKey,
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 const SizedBox(height: 16.0),
-//                 DropdownButtonFormField<String>(
-//                   value: _selectedImage,
-//                   items: images.map((image) {
-//                     return DropdownMenuItem(
-//                       value: image,
-//                       child: Row(
-//                         children: [
-//                           Image.asset(
-//                             image,
-//                             width: 30,
-//                             fit: BoxFit.cover,
-//                           ),
-//                           const SizedBox(width: 10),
-//                           Text(image),
-//                         ],
-//                       ),
-//                     );
-//                   }).toList(),
-//                   onChanged: (value) => setState(() {
-//                     _selectedImage = value;
-//                   }),
-//                   decoration: const InputDecoration(labelText: 'Зображення'),
-//                   validator: (value) =>
-//                   value == null ? 'Оберіть зображення' : null,
-//                 ),
-//                 const SizedBox(height: 16.0),
-//                 // DropdownButtonFormField<String>(
-//                 //   value: _selectedCategory,
-//                 //   items: categories.map((category) {
-//                 //     return DropdownMenuItem(
-//                 //       value: category,
-//                 //       child: Text(category),
-//                 //     );
-//                 //   }).toList(),
-//                 //   onChanged: (value) => setState(() {
-//                 //     _selectedCategory = value;
-//                 //   }),
-//                 //   decoration: const InputDecoration(labelText: 'Категорія'),
-//                 //   validator: (value) =>
-//                 //   value == null ? 'Оберіть категорію' : null,
-//                 // ),
-//                 TextFormField(
-//                   controller: _titleController,
-//                   decoration: const InputDecoration(labelText: 'Назва'),
-//                   validator: (value) => value == null || value.isEmpty
-//                       ? 'Введіть назву рецепту'
-//                       : null,
-//                 ),
-//                 const SizedBox(height: 16.0),
-//                 TextFormField(
-//                   controller: _descriptionController,
-//                   decoration: const InputDecoration(labelText: 'Опис'),
-//                   validator: (value) => value == null || value.isEmpty
-//                       ? 'Введіть опис рецепту'
-//                       : null,
-//                 ),
-//                 const SizedBox(height: 16.0),
-//                 TextFormField(
-//                   controller: _ingredientController,
-//                   decoration: const InputDecoration(labelText: 'Інгредієнти'),
-//                   validator: (value) => value == null || value.isEmpty
-//                       ? 'Введіть склад продукту'
-//                       : null,
-//                 ),
-//                 const SizedBox(height: 16.0),
-//                 TextFormField(
-//                   controller: _instructionController,
-//                   decoration: const InputDecoration(labelText: 'Інструкції'),
-//                   validator: (value) => value == null || value.isEmpty
-//                       ? 'Введіть алгоритм приготування'
-//                       : null,
-//                 ),
-//                 const SizedBox(height: 16.0),
-//                 ElevatedButton(
-//                   onPressed: _saveRecipe,
-//                   child: const Text('Зберегти'),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   void _saveRecipe() {
-//     if (_formKey.currentState!.validate()) {
-//       final recipeTitle = _titleController.text;
-//       final recipeDescription = _descriptionController.text;
-//       final recipeIngredients = _ingredientController.text.split(',');
-//       final recipeInstructions = _instructionController.text.split(',');
-//
-//       // final newRecipe = Recipe(
-//       //   title: recipeTitle,
-//       //   description: recipeDescription,
-//       //   ingredients: recipeIngredients,
-//       //   instructions: recipeInstructions,
-//       //   category: _selectedCategory ?? 'Без категорії',
-//       //   image: _selectedImage != null ? AssetImage(_selectedImage!) : null,
-//       // );
-//
-//       // Provider.of<RecipeModel>(context, listen: false).addRecipe(newRecipe);
-//
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(content: Text('Рецепт "$recipeTitle" збережено!')),
-//       );
-//
-//       _clearForm();
-//       Navigator.pop(context);
-//     }
-//   }
-//
-//   void _clearForm() {
-//     _titleController.clear();
-//     _descriptionController.clear();
-//     _ingredientController.clear();
-//     _instructionController.clear();
-//     setState(() {
-//       _selectedImage = null;
-//       _selectedCategory = null;
-//     });
-//   }
-// }

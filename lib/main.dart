@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_home_work10/stores/transaction_store.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,7 +20,7 @@ void main() async {
   Hive.registerAdapter(UserSettingsAdapter());
   Hive.registerAdapter(AnalyticsAdapter());
 
-  await Hive.openBox<Transaction>(HiveBoxNames.transactionBox);
+  // await Hive.openBox<Transaction>(HiveBoxNames.transactionBox);
   await Hive.openBox<UserSettings>(HiveBoxNames.userSettingsBox);
   await Hive.openBox<Analytics>(HiveBoxNames.analyticsBox);
   await Hive.openBox<String>(HiveBoxNames.currenciesBox);
@@ -33,8 +34,9 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final UserSettingsStore userSettingsStore;
+  final transactionStore = TransactionStore();
 
-  const MyApp({super.key, required this.userSettingsStore});
+  MyApp({super.key, required this.userSettingsStore});
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +49,9 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
-        '/': (context) => const HomeScreen(),
+        '/': (context) => HomeScreen(transactionStore: transactionStore),
         '/settings': (context) => UserSettingsScreen(settingsStore: userSettingsStore),
-        '/transactions': (context) => const UserTransactionsScreen(),
+        '/transactions': (context) => UserTransactionsScreen(),
         '/analytics': (context) => const UserAnalyticsScreen(),
       },
     );
@@ -57,21 +59,3 @@ class MyApp extends StatelessWidget {
 }
 
 
-// class TransactionStore = _TransactionStore with _$TransactionStore;
-//
-// abstract class _TransactionStore with Store {
-//   @observable
-//   ObservableList<Transaction> transactions = ObservableList<Transaction>();
-//
-//   @action
-//   Future<void> addTransaction(Transaction transaction) async {
-//     await transactionBox.add(transaction);
-//     transactions.add(transaction);
-//   }
-// }
-
-// // Збереження транзакції
-// await transactionBox.put('transactionKey', Transaction(...));
-//
-// // Отримання налаштувань користувача
-// UserSettings? settings = userSettingsBox.get('settingsKey');
