@@ -49,12 +49,12 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
         '/': (context) => HomeScreen(transactionStore: transactionStore),
-        '/settings': (context) => UserSettingsScreen(settingsStore: userSettingsStore),
+        '/settings': (context) =>
+            UserSettingsScreen(settingsStore: userSettingsStore),
         '/transactions': (context) => UserTransactionsScreen(),
-        '/analytics': (context) => UserAnalyticsScreen(transactionStore: transactionStore),
+        '/analytics': (context) =>
+            UserAnalyticsScreen(transactionStore: transactionStore),
       },
     );
   }
 }
-
-

@@ -12,8 +12,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
-        backgroundColor: Colors.lightGreen,
+    return Scaffold(
+      backgroundColor: Colors.lightGreen,
       appBar: const CustomAppBar(title: 'My Finance App'),
       body: Center(
         child: Column(

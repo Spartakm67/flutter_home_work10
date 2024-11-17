@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_home_work10/stores/user_settings_store.dart';
 
 class AddCurrencyDialog {
-
-  static void showAddCurrencyDialog(BuildContext context, UserSettingsStore settingsStore) {
+  static void showAddCurrencyDialog(
+    BuildContext context,
+    UserSettingsStore settingsStore,
+  ) {
     final TextEditingController currencyController = TextEditingController();
     showDialog(
       context: context,

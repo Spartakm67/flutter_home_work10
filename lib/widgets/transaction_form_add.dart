@@ -113,7 +113,6 @@ class TransactionFormAdd extends StatelessWidget {
                       category: transactionStore.selectedCategory,
                       date: transactionStore.selectedDate,
                     );
-
                     transactionStore.addTransaction(newTransaction);
                     Navigator.of(context).pushNamed('/transactions');
                   } else {

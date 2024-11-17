@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class TextStyles {
-
   static const TextStyle buttonText = TextStyle(
     fontSize: 18,
     color: Colors.indigo,
@@ -14,7 +13,7 @@ class TextStyles {
         color: Colors.black26,
       ),
     ],
-    );
+  );
 
   static final ButtonStyle textButtonStyle = TextButton.styleFrom(
     foregroundColor: Colors.indigo,

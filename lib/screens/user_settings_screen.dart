@@ -67,12 +67,10 @@ class UserSettingsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // ElevatedButton(
-            //   onPressed: settingsStore.saveSettings,
-            //   child: const Text('Save Settings'),
-            // ),
             CustomButton(
-                onPressed: settingsStore.saveSettings, text: 'Save Settings',),
+              onPressed: settingsStore.saveSettings,
+              text: 'Save Settings',
+            ),
           ],
         ),
       ),
