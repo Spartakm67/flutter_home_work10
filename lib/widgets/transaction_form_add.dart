@@ -11,7 +11,22 @@ class TransactionFormAdd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Transaction')),
+      appBar: AppBar(
+        backgroundColor: Colors.lightGreen,
+        title: const Text(
+          'Add Transaction',
+          style: TextStyle(
+              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0),
+          child: Container(
+            color: Colors.black,
+            height: 1.0,
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -56,10 +71,12 @@ class TransactionFormAdd extends StatelessWidget {
                         ? null
                         : transactionStore.selectedCategory,
                     items: transactionStore.categories
-                        .map((category) => DropdownMenuItem(
-                      value: category,
-                      child: Text(category),
-                    ),)
+                        .map(
+                          (category) => DropdownMenuItem(
+                            value: category,
+                            child: Text(category),
+                          ),
+                        )
                         .toList(),
                     onChanged: transactionStore.updateCategory,
                     decoration: const InputDecoration(labelText: 'Category'),
@@ -90,7 +107,13 @@ class TransactionFormAdd extends StatelessWidget {
                   ),
                 ],
               ),
-              const Spacer(),
+              const Divider(
+                color: Colors.black38,
+                thickness: 1.0,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
               ElevatedButton(
                 onPressed: () {
                   if (transactionStore.amount > 0 &&
@@ -107,7 +130,9 @@ class TransactionFormAdd extends StatelessWidget {
                     Navigator.of(context).pushNamed('/transactions');
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please fill in all fields')),
+                      const SnackBar(
+                        content: Text('Please fill in all fields'),
+                      ),
                     );
                   }
                 },
@@ -119,6 +144,7 @@ class TransactionFormAdd extends StatelessWidget {
       ),
     );
   }
+
   void _pickDate(BuildContext context) async {
     final pickedDate = await showDatePicker(
       context: context,

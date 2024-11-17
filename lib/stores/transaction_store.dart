@@ -21,6 +21,8 @@ abstract class TransactionStoreBase with Store {
     'Clothing',
     'Financial',
     'Car',
+    'Wage',
+    'Other income',
   ]);
 
   @observable
