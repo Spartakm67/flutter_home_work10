@@ -138,7 +138,7 @@ abstract class TransactionStoreBase with Store {
       }
     }
 
-    if (categoryTotals.isEmpty) return 'None';
+    if (categoryTotals.isEmpty) return 'Not selected';
 
     return categoryTotals.entries.reduce((a, b) => a.value > b.value ? a : b).key;
   }

@@ -74,9 +74,9 @@ class UserTransactionsScreen extends StatelessWidget {
                                 height: 8,
                               ),
                               Card(
-                                elevation: 5,
+                                elevation: 3,
                                 margin: const EdgeInsets.symmetric(
-                                  vertical: 4,
+                                  vertical: 2,
                                   horizontal: 12,
                                 ),
                                 child: ListTile(

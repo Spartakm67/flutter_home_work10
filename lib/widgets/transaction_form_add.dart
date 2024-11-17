@@ -5,8 +5,9 @@ import 'package:flutter_home_work10/stores/transaction_store.dart';
 
 class TransactionFormAdd extends StatelessWidget {
   final TransactionStore transactionStore;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  const TransactionFormAdd({super.key, required this.transactionStore});
+  TransactionFormAdd({super.key, required this.transactionStore});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,10 @@ class TransactionFormAdd extends StatelessWidget {
         title: const Text(
           'Add Transaction',
           style: TextStyle(
-              fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
         bottom: PreferredSize(
@@ -30,6 +34,7 @@ class TransactionFormAdd extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
+          key: _formKey,
           child: Column(
             children: [
               Observer(
@@ -42,7 +47,8 @@ class TransactionFormAdd extends StatelessWidget {
                       if (value == null || value.isEmpty) {
                         return 'Please enter an amount';
                       }
-                      if (transactionStore.amount <= 0) {
+                      final parsedValue = double.tryParse(value);
+                      if (parsedValue == null || parsedValue <= 0) {
                         return 'Enter a valid amount greater than zero';
                       }
                       return null;
@@ -73,10 +79,10 @@ class TransactionFormAdd extends StatelessWidget {
                     items: transactionStore.categories
                         .map(
                           (category) => DropdownMenuItem(
-                            value: category,
-                            child: Text(category),
-                          ),
-                        )
+                        value: category,
+                        child: Text(category),
+                      ),
+                    )
                         .toList(),
                     onChanged: transactionStore.updateCategory,
                     decoration: const InputDecoration(labelText: 'Category'),
@@ -111,14 +117,10 @@ class TransactionFormAdd extends StatelessWidget {
                 color: Colors.black38,
                 thickness: 1.0,
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  if (transactionStore.amount > 0 &&
-                      transactionStore.description.isNotEmpty &&
-                      transactionStore.selectedCategory.isNotEmpty) {
+                  if (_formKey.currentState?.validate() ?? false) {
                     final newTransaction = Transaction(
                       amount: transactionStore.amount,
                       description: transactionStore.description,
@@ -131,7 +133,7 @@ class TransactionFormAdd extends StatelessWidget {
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Please fill in all fields'),
+                        content: Text('Please fix the errors in the form'),
                       ),
                     );
                   }

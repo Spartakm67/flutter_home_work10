@@ -23,21 +23,23 @@ class UserAnalyticsScreen extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: DropdownButton<String>(
-                    value: transactionStore.selectedCategoryForAnalytics,
-                    onChanged: (value) {
-                      if (value != null) {
-                        transactionStore.updateAnalyticsCategory(value);
-                      }
-                    },
-                    items: ['All', ...transactionStore.categories]
-                        .map(
-                          (cat) => DropdownMenuItem(
-                            value: cat,
-                            child: Text(cat),
-                          ),
-                        )
-                        .toList(),
+                  child: Observer(
+                    builder: (_) => DropdownButton<String>(
+                      value: transactionStore.selectedCategoryForAnalytics,
+                      onChanged: (value) {
+                        if (value != null) {
+                          transactionStore.updateAnalyticsCategory(value);
+                        }
+                      },
+                      items: ['All', ...transactionStore.categories]
+                          .map(
+                            (cat) => DropdownMenuItem(
+                              value: cat,
+                              child: Text(cat),
+                            ),
+                          )
+                          .toList(),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -55,7 +57,9 @@ class UserAnalyticsScreen extends StatelessWidget {
 
                     if (pickedRange != null) {
                       transactionStore.updateAnalyticsPeriod(
-                          pickedRange.start, pickedRange.end,);
+                        pickedRange.start,
+                        pickedRange.end,
+                      );
                     }
                   },
                   child: const Text('Select Date Range'),
@@ -63,18 +67,32 @@ class UserAnalyticsScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            Observer(
-              builder: (_) => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                      'Total Income: ${transactionStore.totalIncome.toStringAsFixed(2)}',),
-                  Text(
-                      'Total Expense: ${transactionStore.totalExpense.toStringAsFixed(2)}',),
-                  Text(
-                      'Most Active Category: ${transactionStore.mostActiveCategory}',),
-                ],
-              ),
+            Row(
+              children: [
+                Observer(
+                  builder: (_) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Total Income: ${transactionStore.totalIncome.toStringAsFixed(2)}',
+                      ),
+                      Text(
+                        'Total Expense: ${transactionStore.totalExpense.toStringAsFixed(2)}',
+                      ),
+                      Text(
+                        'Most Active Category: ${transactionStore.mostActiveCategory}',
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 25,),
+                Observer(
+                  builder: (_) => Text(
+                    'Selected: \n${transactionStore.startDateForAnalytics.toLocal().toString().split(' ')[0]} - '
+                        '\n${transactionStore.endDateForAnalytics.toLocal().toString().split(' ')[0]}',
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -82,3 +100,7 @@ class UserAnalyticsScreen extends StatelessWidget {
     );
   }
 }
+
+// .toString().split(' ')[0]}
+
+
