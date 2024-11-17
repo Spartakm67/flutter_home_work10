@@ -9,6 +9,28 @@ part of 'transaction_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$TransactionStore on TransactionStoreBase, Store {
+  Computed<double>? _$totalIncomeComputed;
+
+  @override
+  double get totalIncome =>
+      (_$totalIncomeComputed ??= Computed<double>(() => super.totalIncome,
+              name: 'TransactionStoreBase.totalIncome'))
+          .value;
+  Computed<double>? _$totalExpenseComputed;
+
+  @override
+  double get totalExpense =>
+      (_$totalExpenseComputed ??= Computed<double>(() => super.totalExpense,
+              name: 'TransactionStoreBase.totalExpense'))
+          .value;
+  Computed<String>? _$mostActiveCategoryComputed;
+
+  @override
+  String get mostActiveCategory => (_$mostActiveCategoryComputed ??=
+          Computed<String>(() => super.mostActiveCategory,
+              name: 'TransactionStoreBase.mostActiveCategory'))
+      .value;
+
   late final _$transactionsAtom =
       Atom(name: 'TransactionStoreBase.transactions', context: context);
 
@@ -105,6 +127,57 @@ mixin _$TransactionStore on TransactionStoreBase, Store {
     });
   }
 
+  late final _$selectedCategoryForAnalyticsAtom = Atom(
+      name: 'TransactionStoreBase.selectedCategoryForAnalytics',
+      context: context);
+
+  @override
+  String get selectedCategoryForAnalytics {
+    _$selectedCategoryForAnalyticsAtom.reportRead();
+    return super.selectedCategoryForAnalytics;
+  }
+
+  @override
+  set selectedCategoryForAnalytics(String value) {
+    _$selectedCategoryForAnalyticsAtom
+        .reportWrite(value, super.selectedCategoryForAnalytics, () {
+      super.selectedCategoryForAnalytics = value;
+    });
+  }
+
+  late final _$startDateForAnalyticsAtom = Atom(
+      name: 'TransactionStoreBase.startDateForAnalytics', context: context);
+
+  @override
+  DateTime get startDateForAnalytics {
+    _$startDateForAnalyticsAtom.reportRead();
+    return super.startDateForAnalytics;
+  }
+
+  @override
+  set startDateForAnalytics(DateTime value) {
+    _$startDateForAnalyticsAtom.reportWrite(value, super.startDateForAnalytics,
+        () {
+      super.startDateForAnalytics = value;
+    });
+  }
+
+  late final _$endDateForAnalyticsAtom =
+      Atom(name: 'TransactionStoreBase.endDateForAnalytics', context: context);
+
+  @override
+  DateTime get endDateForAnalytics {
+    _$endDateForAnalyticsAtom.reportRead();
+    return super.endDateForAnalytics;
+  }
+
+  @override
+  set endDateForAnalytics(DateTime value) {
+    _$endDateForAnalyticsAtom.reportWrite(value, super.endDateForAnalytics, () {
+      super.endDateForAnalytics = value;
+    });
+  }
+
   late final _$addTransactionAsyncAction =
       AsyncAction('TransactionStoreBase.addTransaction', context: context);
 
@@ -193,6 +266,28 @@ mixin _$TransactionStore on TransactionStoreBase, Store {
   }
 
   @override
+  void updateAnalyticsPeriod(DateTime start, DateTime end) {
+    final _$actionInfo = _$TransactionStoreBaseActionController.startAction(
+        name: 'TransactionStoreBase.updateAnalyticsPeriod');
+    try {
+      return super.updateAnalyticsPeriod(start, end);
+    } finally {
+      _$TransactionStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void updateAnalyticsCategory(String category) {
+    final _$actionInfo = _$TransactionStoreBaseActionController.startAction(
+        name: 'TransactionStoreBase.updateAnalyticsCategory');
+    try {
+      return super.updateAnalyticsCategory(category);
+    } finally {
+      _$TransactionStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 transactions: ${transactions},
@@ -200,7 +295,13 @@ categories: ${categories},
 selectedCategory: ${selectedCategory},
 description: ${description},
 amount: ${amount},
-selectedDate: ${selectedDate}
+selectedDate: ${selectedDate},
+selectedCategoryForAnalytics: ${selectedCategoryForAnalytics},
+startDateForAnalytics: ${startDateForAnalytics},
+endDateForAnalytics: ${endDateForAnalytics},
+totalIncome: ${totalIncome},
+totalExpense: ${totalExpense},
+mostActiveCategory: ${mostActiveCategory}
     ''';
   }
 }

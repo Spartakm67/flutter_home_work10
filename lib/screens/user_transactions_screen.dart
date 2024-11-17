@@ -32,7 +32,7 @@ class UserTransactionsScreen extends StatelessWidget {
             style: TextButton.styleFrom(
               foregroundColor: Colors.blue,
             ),
-            child: const Text('home'),
+            child: const Text('Home'),
           ),
           IconButton(
             icon: const Icon(

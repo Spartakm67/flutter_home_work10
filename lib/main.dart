@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => HomeScreen(transactionStore: transactionStore),
         '/settings': (context) => UserSettingsScreen(settingsStore: userSettingsStore),
         '/transactions': (context) => UserTransactionsScreen(),
-        '/analytics': (context) => const UserAnalyticsScreen(),
+        '/analytics': (context) => UserAnalyticsScreen(transactionStore: transactionStore),
       },
     );
   }

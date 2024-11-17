@@ -2,7 +2,6 @@ import 'package:mobx/mobx.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_home_work10/data/database/hive_box_names.dart';
 import 'package:flutter_home_work10/data/models/transaction.dart';
-import 'package:flutter_home_work10/data/models/analytics.dart';
 
 part 'transaction_store.g.dart';
 
