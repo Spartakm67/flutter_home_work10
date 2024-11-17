@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TextStyles {
+
   static const TextStyle buttonText = TextStyle(
     fontSize: 18,
     color: Colors.indigo,
@@ -14,6 +15,16 @@ class TextStyles {
       ),
     ],
     );
+
+  static final ButtonStyle textButtonStyle = TextButton.styleFrom(
+    foregroundColor: Colors.indigo,
+    backgroundColor: Colors.white70,
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+    textStyle: TextStyles.buttonText,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+  );
 
   static const TextStyle defaultText = TextStyle(
     fontSize: 20,

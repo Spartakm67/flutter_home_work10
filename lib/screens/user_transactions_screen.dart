@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_home_work10/stores/transaction_store.dart';
 import 'package:flutter_home_work10/stores/user_settings_store.dart';
 import 'package:flutter_home_work10/styles/text_styles.dart';
+import 'package:flutter_home_work10/widgets/custom_app_bar.dart';
 
 class UserTransactionsScreen extends StatelessWidget {
   final TransactionStore transactionStore = TransactionStore();
@@ -16,9 +17,8 @@ class UserTransactionsScreen extends StatelessWidget {
     final userSettings = UserSettingsStore();
     return Scaffold(
       backgroundColor: Colors.lightGreen,
-      appBar: AppBar(
-        backgroundColor: Colors.lightGreen,
-        title: const Text('Transactions'),
+      appBar: CustomAppBar(
+        title: 'Transactions',
         actions: [
           TextButton(
             onPressed: () {
@@ -30,15 +30,12 @@ class UserTransactionsScreen extends StatelessWidget {
               );
             },
             style: TextButton.styleFrom(
-              foregroundColor: Colors.blue,
+              foregroundColor: Colors.white,
             ),
             child: const Text('Home'),
           ),
           IconButton(
-            icon: const Icon(
-              Icons.add,
-              color: Colors.redAccent,
-            ),
+            icon: const Icon(Icons.add, color: Colors.white),
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(

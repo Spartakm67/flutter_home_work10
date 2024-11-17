@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_home_work10/data/models/transaction.dart';
 import 'package:flutter_home_work10/stores/transaction_store.dart';
+import 'package:flutter_home_work10/widgets/custom_app_bar.dart';
+import 'package:flutter_home_work10/widgets/custom_button.dart';
 
 class TransactionFormAdd extends StatelessWidget {
   final TransactionStore transactionStore;
@@ -12,24 +14,8 @@ class TransactionFormAdd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightGreen,
-        title: const Text(
-          'Add Transaction',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: Colors.black,
-            height: 1.0,
-          ),
-        ),
+      appBar: const CustomAppBar(
+        title: 'Add Transaction',
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -46,10 +32,10 @@ class TransactionFormAdd extends StatelessWidget {
                     items: transactionStore.categories
                         .map(
                           (category) => DropdownMenuItem(
-                        value: category,
-                        child: Text(category),
-                      ),
-                    )
+                            value: category,
+                            child: Text(category),
+                          ),
+                        )
                         .toList(),
                     onChanged: transactionStore.updateCategory,
                     decoration: const InputDecoration(labelText: 'Category'),
@@ -118,7 +104,7 @@ class TransactionFormAdd extends StatelessWidget {
                 thickness: 1.0,
               ),
               const SizedBox(height: 30),
-              ElevatedButton(
+              CustomButton(
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
                     final newTransaction = Transaction(
@@ -138,7 +124,7 @@ class TransactionFormAdd extends StatelessWidget {
                     );
                   }
                 },
-                child: const Text('Add Transaction'),
+                text: 'Add Transaction',
               ),
             ],
           ),

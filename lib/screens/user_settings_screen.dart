@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_home_work10/stores/user_settings_store.dart';
 import 'package:flutter_home_work10/widgets/add_currency_dialog.dart';
 import 'package:flutter_home_work10/widgets/custom_button.dart';
+import 'package:flutter_home_work10/widgets/custom_app_bar.dart';
 
 class UserSettingsScreen extends StatelessWidget {
   final UserSettingsStore settingsStore;
@@ -12,9 +13,7 @@ class UserSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('User Settings'),
-      ),
+      appBar: const CustomAppBar(title: 'User Settings'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
