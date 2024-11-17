@@ -2,6 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_home_work10/data/database/hive_box_names.dart';
 import 'package:flutter_home_work10/data/models/transaction.dart';
+import 'package:flutter_home_work10/data/models/analytics.dart';
 
 part 'transaction_store.g.dart';
 
@@ -93,5 +94,64 @@ abstract class TransactionStoreBase with Store {
   @action
   void removeCategory(String category) {
     categories.remove(category);
+  }
+
+  @observable
+  String selectedCategoryForAnalytics = 'All';
+
+  @observable
+  DateTime startDateForAnalytics = DateTime(DateTime.now().year, DateTime.now().month, 1);
+
+  @observable
+  DateTime endDateForAnalytics = DateTime.now();
+
+  @computed
+  double get totalIncome {
+    return transactions
+        .where((t) =>
+    t.amount > 0 &&
+        (selectedCategoryForAnalytics == 'All' || t.category == selectedCategoryForAnalytics) &&
+        t.date.isAfter(startDateForAnalytics) &&
+        t.date.isBefore(endDateForAnalytics),)
+        .fold(0.0, (sum, t) => sum + t.amount);
+  }
+
+  @computed
+  double get totalExpense {
+    return transactions
+        .where((t) =>
+    t.amount < 0 &&
+        (selectedCategoryForAnalytics == 'All' || t.category == selectedCategoryForAnalytics) &&
+        t.date.isAfter(startDateForAnalytics) &&
+        t.date.isBefore(endDateForAnalytics),)
+        .fold(0.0, (sum, t) => sum + t.amount.abs());
+  }
+
+  @computed
+  String get mostActiveCategory {
+    final Map<String, double> categoryTotals = {};
+
+    for (var t in transactions) {
+      if (t.amount < 0 &&
+          t.date.isAfter(startDateForAnalytics) &&
+          t.date.isBefore(endDateForAnalytics)) {
+        categoryTotals[t.category] = (categoryTotals[t.category] ?? 0) + t.amount.abs();
+      }
+    }
+
+    if (categoryTotals.isEmpty) return 'None';
+
+    return categoryTotals.entries.reduce((a, b) => a.value > b.value ? a : b).key;
+  }
+
+  @action
+  void updateAnalyticsPeriod(DateTime start, DateTime end) {
+    startDateForAnalytics = start;
+    endDateForAnalytics = end;
+  }
+
+  @action
+  void updateAnalyticsCategory(String category) {
+    selectedCategoryForAnalytics = category;
   }
 }
