@@ -2,6 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_home_work10/data/database/hive_box_names.dart';
 import 'package:flutter_home_work10/data/models/transaction.dart';
+import 'package:flutter_home_work10/data/models/analytics.dart';
 
 part 'transaction_store.g.dart';
 
@@ -52,7 +53,13 @@ abstract class TransactionStoreBase with Store {
     if (amt == null || amt.isEmpty) {
       amount = 0.0;
     } else {
-      amount = double.tryParse(amt) ?? 0.0;
+      double parsedAmount = double.tryParse(amt) ?? 0.0;
+
+      if (selectedCategory == 'Wage' || selectedCategory == 'Other income') {
+        amount = parsedAmount;
+      } else {
+        amount = -parsedAmount;
+      }
     }
   }
 
@@ -152,5 +159,16 @@ abstract class TransactionStoreBase with Store {
   @action
   void updateAnalyticsCategory(String category) {
     selectedCategoryForAnalytics = category;
+  }
+
+  @action
+  Future<void> saveAnalyticsToDatabase() async {
+    final analytics = Analytics(
+      totalIncome: totalIncome,
+      totalExpense: totalExpense,
+      category: mostActiveCategory,
+    );
+    final analyticsBox = await Hive.openBox<Analytics>('analyticsBox');
+    await analyticsBox.add(analytics);
   }
 }

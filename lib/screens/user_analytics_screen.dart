@@ -85,14 +85,30 @@ class UserAnalyticsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(width: 25,),
+                const SizedBox(
+                  width: 25,
+                ),
                 Observer(
                   builder: (_) => Text(
                     'Selected: \n${transactionStore.startDateForAnalytics.toLocal().toString().split(' ')[0]} - '
-                        '\n${transactionStore.endDateForAnalytics.toLocal().toString().split(' ')[0]}',
+                    '\n${transactionStore.endDateForAnalytics.toLocal().toString().split(' ')[0]}',
                   ),
                 ),
               ],
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            Observer(
+              builder: (_) => ElevatedButton(
+                onPressed: () {
+                  transactionStore.saveAnalyticsToDatabase();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Analytics saved!')),
+                  );
+                },
+                child: const Text('Save Analytics'),
+              ),
             ),
           ],
         ),
@@ -100,7 +116,3 @@ class UserAnalyticsScreen extends StatelessWidget {
     );
   }
 }
-
-// .toString().split(' ')[0]}
-
-

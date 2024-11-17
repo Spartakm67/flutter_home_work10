@@ -196,6 +196,16 @@ mixin _$TransactionStore on TransactionStoreBase, Store {
         .run(() => super.deleteTransaction(index));
   }
 
+  late final _$saveAnalyticsToDatabaseAsyncAction = AsyncAction(
+      'TransactionStoreBase.saveAnalyticsToDatabase',
+      context: context);
+
+  @override
+  Future<void> saveAnalyticsToDatabase() {
+    return _$saveAnalyticsToDatabaseAsyncAction
+        .run(() => super.saveAnalyticsToDatabase());
+  }
+
   late final _$TransactionStoreBaseActionController =
       ActionController(name: 'TransactionStoreBase', context: context);
 

@@ -39,6 +39,31 @@ class TransactionFormAdd extends StatelessWidget {
             children: [
               Observer(
                 builder: (_) {
+                  return DropdownButtonFormField<String>(
+                    value: transactionStore.selectedCategory.isEmpty
+                        ? null
+                        : transactionStore.selectedCategory,
+                    items: transactionStore.categories
+                        .map(
+                          (category) => DropdownMenuItem(
+                        value: category,
+                        child: Text(category),
+                      ),
+                    )
+                        .toList(),
+                    onChanged: transactionStore.updateCategory,
+                    decoration: const InputDecoration(labelText: 'Category'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select a category';
+                      }
+                      return null;
+                    },
+                  );
+                },
+              ),
+              Observer(
+                builder: (_) {
                   return TextFormField(
                     decoration: const InputDecoration(labelText: 'Amount'),
                     keyboardType: TextInputType.number,
@@ -64,31 +89,6 @@ class TransactionFormAdd extends StatelessWidget {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a description';
-                      }
-                      return null;
-                    },
-                  );
-                },
-              ),
-              Observer(
-                builder: (_) {
-                  return DropdownButtonFormField<String>(
-                    value: transactionStore.selectedCategory.isEmpty
-                        ? null
-                        : transactionStore.selectedCategory,
-                    items: transactionStore.categories
-                        .map(
-                          (category) => DropdownMenuItem(
-                        value: category,
-                        child: Text(category),
-                      ),
-                    )
-                        .toList(),
-                    onChanged: transactionStore.updateCategory,
-                    decoration: const InputDecoration(labelText: 'Category'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please select a category';
                       }
                       return null;
                     },

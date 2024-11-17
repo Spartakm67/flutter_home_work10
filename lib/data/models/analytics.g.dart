@@ -19,7 +19,7 @@ class AnalyticsAdapter extends TypeAdapter<Analytics> {
     return Analytics(
       totalIncome: fields[0] as double,
       totalExpense: fields[1] as double,
-      category: fields[2] as double,
+      category: fields[2] as String,
     );
   }
 
