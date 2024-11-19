@@ -113,7 +113,7 @@ class UserAnalyticsScreen extends StatelessWidget {
                       ),
                       Text(
                         'Most Active Category:'
-                        ' ${transactionStore.mostActiveCategory}',
+                        '\n ${transactionStore.mostActiveCategory}',
                         style: TextStyles.userText,
                       ),
                     ],
